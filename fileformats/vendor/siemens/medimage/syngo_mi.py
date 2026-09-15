@@ -38,7 +38,6 @@ class SyngoMi_Vr20b_RawData(PetRawData):  # type: ignore[misc]
 
     ext = ".ptd"
     expected_image_type: str = ""  # For sub-classes to specify the expected image tag
-    alternate_image_types: ty.Tuple[str, ...] = ()
     IMAGE_TYPE_TAG = (0x0008, 0x0008)
 
     def read_tag(self, tag: ty.Tuple[int, int]) -> ty.Union[str, bytes, None]:
@@ -64,14 +63,10 @@ class SyngoMi_Vr20b_RawData(PetRawData):  # type: ignore[misc]
                     f"form ['ORIGINAL', 'PRIMARY', *]"
                 )
             image_type = image_type_seq[2]
-            accepted_image_types = (
-                self.expected_image_type,
-                *self.alternate_image_types,
-            )
-            if image_type not in accepted_image_types:
+            if self.expected_image_type != image_type:
                 raise FormatMismatchError(
                     f"Image type of {self} ({image_type!r}) does not match expected "
-                    f"({accepted_image_types!r})"
+                    f"({self.expected_image_type!r})"
                 )
             return image_type
         assert isinstance(self._image_type_seq[2], str)
@@ -159,7 +154,14 @@ class SyngoMi_Vr20b_Sinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: 
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_EM_SINOGRAM"
-    alternate_image_types = ("PET_SINO_GATED_RESPIRATORY",)
+
+
+class SyngoMi_Vr20b_RespiratoryGatedSinogram(
+    SyngoMi_Vr20b_LargeRawData, PetSinogram  # type: ignore[misc]
+):
+    "respiratory-gated histogrammed projection data"
+
+    expected_image_type = "PET_SINO_GATED_RESPIRATORY"
 
 
 class SyngoMi_Vr20b_DynamicSinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: ignore[misc]

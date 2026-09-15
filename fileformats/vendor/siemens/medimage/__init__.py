@@ -3,6 +3,7 @@ from .syngo_mi import (
     SyngoMi_Vr20b_LargeRawData,
     SyngoMi_Vr20b_ListMode,
     SyngoMi_Vr20b_Sinogram,
+    SyngoMi_Vr20b_RespiratoryGatedSinogram,
     SyngoMi_Vr20b_DynamicSinogram,
     SyngoMi_Vr20b_CountRate,
     SyngoMi_Vr20b_Parameterisation,
@@ -19,6 +20,9 @@ Biograph128Vision_Vr20b_PetRawData = SyngoMi_Vr20b_RawData
 Biograph128Vision_Vr20b_PetLargeRawData = SyngoMi_Vr20b_LargeRawData
 Biograph128Vision_Vr20b_PetListMode = SyngoMi_Vr20b_ListMode
 Biograph128Vision_Vr20b_PetSinogram = SyngoMi_Vr20b_Sinogram
+Biograph128Vision_Vr20b_PetRespiratoryGatedSinogram = (
+    SyngoMi_Vr20b_RespiratoryGatedSinogram
+)
 Biograph128Vision_Vr20b_PetDynamicSinogram = SyngoMi_Vr20b_DynamicSinogram
 Biograph128Vision_Vr20b_PetCountRate = SyngoMi_Vr20b_CountRate
 Biograph128Vision_Vr20b_PetParameterisation = SyngoMi_Vr20b_Parameterisation
@@ -32,6 +36,7 @@ __all__ = [
     "SyngoMi_Vr20b_LargeRawData",
     "SyngoMi_Vr20b_ListMode",
     "SyngoMi_Vr20b_Sinogram",
+    "SyngoMi_Vr20b_RespiratoryGatedSinogram",
     "SyngoMi_Vr20b_DynamicSinogram",
     "SyngoMi_Vr20b_CountRate",
     "SyngoMi_Vr20b_Parameterisation",
