@@ -156,6 +156,14 @@ class SyngoMi_Vr20b_Sinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: 
     expected_image_type = "PET_EM_SINOGRAM"
 
 
+class SyngoMi_Vr20b_RespiratoryGatedSinogram(
+    SyngoMi_Vr20b_LargeRawData, PetSinogram  # type: ignore[misc]
+):
+    "respiratory-gated histogrammed projection data"
+
+    expected_image_type = "PET_SINO_GATED_RESPIRATORY"
+
+
 class SyngoMi_Vr20b_DynamicSinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: ignore[misc]
     "histogrammed projection data in a reconstruction-friendly format"
 
