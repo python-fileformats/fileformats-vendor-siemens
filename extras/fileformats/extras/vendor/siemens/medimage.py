@@ -1,23 +1,28 @@
-import typing as ty
-from pathlib import Path
-import pydicom
+import os
 import sys
+import typing as ty
 from collections import Counter
-from fileformats.core import SampleFileGenerator
-from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_listmode import (
-    get_data as get_pet_listmode_data,
+from pathlib import Path
+
+import pydicom
+from fileformats.core import FileSet, SampleFileGenerator, extra_implementation
+from fileformats.core.io import BinaryIOWindow
+from fileformats.medimage.base import MedicalImagingData
+from fileformats.medimage.dicom import DicomImage
+from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_calibration import (
+    get_data as get_pet_calibration_data,
 )
 from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_countrate import (
     get_data as get_pet_countrate_data,
 )
+from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_dynamics_sino import (
+    get_data as get_pet_dynamics_sino_data,
+)
 from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_em_sino import (
     get_data as get_pet_sinogram_data,
 )
-from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_calibration import (
-    get_data as get_pet_calibration_data,
-)
-from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_dynamics_sino import (
-    get_data as get_pet_dynamics_sino_data,
+from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_listmode import (
+    get_data as get_pet_listmode_data,
 )
 from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_replay_param import (
     get_data as get_pet_replay_param_data,
@@ -25,23 +30,21 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.pet_replay_para
 from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl import (
     get_data as get_petct_spl_data,
 )
-from fileformats.core import extra_implementation, FileSet
-from fileformats.medimage.dicom import DicomImage
+
 from fileformats.vendor.siemens.medimage import (
-    SyngoMr_Xa_Puls,
-    SyngoMr_Xa_Rda,
-    SyngoMi_Vr20b_RawData,
+    SyngoMi_Vr20b_CountRate,
+    SyngoMi_Vr20b_CtSpl,
+    SyngoMi_Vr20b_DynamicSinogramSeries,
     SyngoMi_Vr20b_LargeRawData,
     SyngoMi_Vr20b_ListMode,
-    SyngoMi_Vr20b_Sinogram,
-    SyngoMi_Vr20b_DynamicSinogramSeries,
-    SyngoMi_Vr20b_CountRate,
     SyngoMi_Vr20b_Normalisation,
     SyngoMi_Vr20b_Parameterisation,
-    SyngoMi_Vr20b_CtSpl,
+    SyngoMi_Vr20b_RawData,
+    SyngoMi_Vr20b_Sinogram,
+    SyngoMr_Xa_Puls,
+    SyngoMr_Xa_Rda,
     SyngoMr_Xa_Twix,
 )
-from fileformats.core.io import BinaryIOWindow
 
 if sys.version_info >= (3, 9):
     from typing import TypeAlias
@@ -284,3 +287,33 @@ def twix_raw_data_read_metadata(
     scans = twixtools.read_twix(str(twix_data.fspath), parse_data=False, verbose=False)
     # Return the parsed protocol headers from the last measurement (the actual scan)
     return scans[-1].get("hdr", {})  # type: ignore[no-any-return]
+
+
+@extra_implementation(MedicalImagingData.deidentify)
+def siemens_rda_read_deidentify(
+    rda: SyngoMr_Xa_Rda,
+    out_dir: os.PathLike[str],
+    spec: str | Path | None = None,
+    **kwargs: ty.Any,
+) -> SyngoMr_Xa_Rda:
+    raise NotImplementedError
+
+
+@extra_implementation(MedicalImagingData.deidentify)
+def twix_raw_data_deidentify(
+    twix_data: SyngoMr_Xa_Twix,
+    out_dir: os.PathLike[str],
+    spec: str | Path | None = None,
+    **kwargs: ty.Any,
+) -> SyngoMr_Xa_Twix:
+    raise NotImplementedError
+
+
+@extra_implementation(MedicalImagingData.deidentify)
+def siemens_puls_read_deidentify(
+    puls: SyngoMr_Xa_Puls,
+    out_dir: os.PathLike[str],
+    spec: str | Path | None = None,
+    **kwargs: ty.Any,
+) -> SyngoMr_Xa_Puls:
+    raise NotImplementedError
