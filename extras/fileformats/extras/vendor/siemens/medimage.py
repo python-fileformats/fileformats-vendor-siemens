@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 import pydicom
-from fileformats.core import FileSet, SampleFileGenerator, extra_implementation
+from fileformats.core import FileSet, Loaded, SampleFileGenerator, extra_implementation
 from fileformats.core.io import BinaryIOWindow
 from fileformats.medimage.base import MedicalImagingData
 from fileformats.medimage.dicom import DicomImage
@@ -293,7 +293,8 @@ def twix_raw_data_read_metadata(
 def siemens_rda_read_deidentify(
     rda: SyngoMr_Xa_Rda,
     out_dir: os.PathLike[str],
-    spec: str | Path | None = None,
+    # TODO: narrow to the recipe format once implemented
+    recipe: Loaded[FileSet] | None = None,
     **kwargs: ty.Any,
 ) -> SyngoMr_Xa_Rda:
     raise NotImplementedError
@@ -303,7 +304,8 @@ def siemens_rda_read_deidentify(
 def twix_raw_data_deidentify(
     twix_data: SyngoMr_Xa_Twix,
     out_dir: os.PathLike[str],
-    spec: str | Path | None = None,
+    # TODO: narrow to the recipe format once implemented
+    recipe: Loaded[FileSet] | None = None,
     **kwargs: ty.Any,
 ) -> SyngoMr_Xa_Twix:
     raise NotImplementedError
@@ -313,7 +315,8 @@ def twix_raw_data_deidentify(
 def siemens_puls_read_deidentify(
     puls: SyngoMr_Xa_Puls,
     out_dir: os.PathLike[str],
-    spec: str | Path | None = None,
+    # TODO: narrow to the recipe format once implemented
+    recipe: Loaded[FileSet] | None = None,
     **kwargs: ty.Any,
 ) -> SyngoMr_Xa_Puls:
     raise NotImplementedError
